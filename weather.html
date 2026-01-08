@@ -5,51 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Tracker | ITECHPISCARTSYNERGY</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-animate {
+            background: radial-gradient(circle at top right, #1e1b4b, #020617, #0f172a);
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white/5 backdrop-blur-2xl border border-white/10 p-10 rounded-[2.5rem] shadow-2xl w-full max-w-md border-t-indigo-500/50">
+<body class="bg-animate text-white min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white/10 backdrop-blur-3xl border border-white/20 p-10 rounded-[2.5rem] shadow-2xl w-full max-w-md">
         <a href="index.html" class="text-indigo-400 hover:text-indigo-300 text-xs font-black uppercase tracking-[0.2em] mb-8 block transition">← Back to Portfolio</a>
         
         <h2 class="text-4xl font-black mb-1 tracking-tighter">Live Weather</h2>
-        <p class="text-slate-400 text-sm mb-10 font-medium">Babatunde Herbaz Data Synergy</p>
+        <p class="text-slate-400 text-sm mb-10 font-medium italic">Babatunde Herbaz Data Synergy</p>
         
         <div class="flex gap-3 mb-10">
-            <input id="cityInput" type="text" placeholder="Search City..." class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all placeholder:text-slate-600">
-            <button onclick="getWeather()" class="bg-indigo-600 p-4 rounded-2xl hover:bg-indigo-500 transition-all active:scale-90 shadow-lg shadow-indigo-600/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <input id="cityInput" type="text" placeholder="Search City..." 
+                class="w-full p-4 rounded-2xl bg-black/20 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-white">
+            <button onclick="getWeather()" class="bg-indigo-600 p-4 rounded-2xl hover:bg-indigo-500 transition-all active:scale-90 shadow-lg shadow-indigo-600/40">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </button>
         </div>
 
-        <div id="weatherDisplay" class="hidden text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div id="weatherDisplay" class="hidden text-center transition-all duration-500">
             <h3 id="cityName" class="text-2xl font-bold text-white tracking-tight">---</h3>
-            <div class="relative inline-block">
-                <p id="temp" class="text-8xl font-black my-4 bg-gradient-to-b from-white to-indigo-400 bg-clip-text text-transparent">--°C</p>
-            </div>
-            <p id="desc" class="text-indigo-300 uppercase font-black tracking-[0.3em] text-[10px] bg-indigo-500/10 py-2 rounded-full border border-indigo-500/20">Loading Condition</p>
+            <p id="temp" class="text-8xl font-black my-4 bg-gradient-to-b from-white to-indigo-400 bg-clip-text text-transparent">--°</p>
+            <p id="desc" class="text-indigo-300 uppercase font-black tracking-[0.3em] text-[10px] bg-indigo-500/10 py-2 rounded-full border border-indigo-500/20">Loading...</p>
         </div>
     </div>
 
     <script>
         async function getWeather() {
-            const city = document.getElementById('cityInput').value;
+            const cityInput = document.getElementById('cityInput');
+            const city = cityInput.value;
+            const display = document.getElementById('weatherDisplay');
             const apiKey = 'aad4cbdae56d6d693c4f99064fe46dcd'; 
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            if(!city) return;
+
+            // Trigger "Loading" feel
+            display.style.opacity = "0.5";
 
             try {
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('City not found');
                 const data = await response.json();
                 
-                const display = document.getElementById('weatherDisplay');
                 display.classList.remove('hidden');
+                display.style.opacity = "1";
                 
                 document.getElementById('cityName').innerText = data.name + ", " + data.sys.country;
                 document.getElementById('temp').innerText = Math.round(data.main.temp) + '°';
                 document.getElementById('desc').innerText = data.weather[0].description;
+
+                // Clear input for next search
+                cityInput.value = ""; 
             } catch (error) {
-                alert("City not found. Please double-check the spelling!");
+                alert("City not found. Try again!");
+                display.classList.add('hidden');
             }
         }
+
+        // Allow pressing "Enter" key to search
+        document.getElementById('cityInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                getWeather();
+            }
+        });
     </script>
 </body>
 </html>
