@@ -37,11 +37,34 @@
         </div>
     </header>
 
-    <section id="weather" class="bg-white py-20 border-y border-slate-200">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h3 class="text-3xl font-bold mb-4 text-slate-800">Powered by Babatunde Herbaz</h3>
-            <p class="text-slate-600 mb-8">Experience real-time data integration with our custom weather engine.</p>
-            <a href="weather.html" class="inline-block bg-slate-800 text-white px-10 py-4 rounded-xl font-semibold hover:bg-slate-700 transition">Launch Weather App</a>
+    <section id="contact" class="bg-slate-50 py-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black text-slate-900 tracking-tighter">Get In Touch</h2>
+                <p class="text-slate-500 mt-2 font-medium">Ready to collaborate on Geospatial or Data projects?</p>
+            </div>
+    
+            <div class="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-slate-200">
+                <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Full Name</label>
+                            <input type="text" name="name" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Email Address</label>
+                            <input type="email" name="email" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Message</label>
+                        <textarea name="message" rows="5" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-xl hover:bg-indigo-700 transition-all active:scale-95">
+                        SEND MESSAGE SYNERGY
+                    </button>
+                </form>
+            </div>
         </div>
     </section>
 
