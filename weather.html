@@ -6,58 +6,80 @@
     <title>Global Weather Analysis | ITECH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
-        body {
-            background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-        }
+        body { background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-attachment: fixed; }
         #map { height: 400px; width: 100%; border-radius: 1rem; border: 4px solid white; z-index: 1; }
-        .weather-card { transition: transform 0.2s ease; }
+        .analytic-row:nth-child(even) { background: rgba(0,0,0,0.02); }
     </style>
 </head>
 <body class="min-h-screen font-sans pb-20">
     
-    <div class="bg-black/30 backdrop-blur-sm sticky top-0 z-[1000] py-4 px-6 text-center text-white border-b border-white/10">
+    <div class="bg-black/40 backdrop-blur-md sticky top-0 z-[1000] py-4 px-6 text-center text-white border-b border-white/10 flex justify-between items-center">
         <h1 class="text-xl font-bold tracking-tighter uppercase">Babatunde Abass</h1>
-        <p class="text-[10px] tracking-widest opacity-80 uppercase">Geospatial Data Analyst Dashboard</p>
+        <button onclick="downloadPDF()" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg text-xs font-bold transition">Download PDF Report</button>
     </div>
 
     <div class="max-w-7xl mx-auto p-6 mt-6">
-        <div class="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-4 items-center mb-6 border border-white">
-            <input id="cityInput" type="text" placeholder="Lagos, London, Tokyo, Ibadan..." 
-                class="w-full md:flex-1 p-3 rounded-lg border border-slate-200 bg-white text-slate-800 outline-none focus:ring-2 focus:ring-blue-500">
-            <div class="flex gap-2 w-full md:w-auto">
-                <button onclick="getMultiWeather()" class="bg-indigo-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-800 flex-1 md:flex-none">Analyze Global Data</button>
-                <button onclick="clearAll()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-600">Clear All</button>
+        <div id="statsBar" class="hidden bg-white/95 p-4 rounded-xl shadow-xl mb-6 flex justify-around text-indigo-900 font-bold border border-white text-sm">
+            <div id="hottestBox">Hottest: --</div>
+            <div id="coldestBox">Coldest: --</div>
+            <div id="avgBox">Avg: --</div>
+        </div>
+
+        <div class="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl mb-6 border border-white">
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <input id="cityInput" type="text" placeholder="Lagos, London, Tokyo..." class="w-full md:flex-1 p-3 rounded-lg border border-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="flex gap-2">
+                    <button onclick="getMultiWeather()" class="bg-indigo-950 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-800 transition">Analyze</button>
+                    <button onclick="clearAll()" class="bg-red-500 text-white px-4 py-3 rounded-lg font-bold hover:bg-red-600">Clear</button>
+                </div>
             </div>
+            <div id="historyList" class="mt-4 flex gap-2 flex-wrap text-[10px] text-slate-500 font-bold uppercase">
+                </div>
         </div>
 
-        <div class="bg-white/80 backdrop-blur-md p-2 rounded-2xl shadow-2xl mb-10">
-            <div id="map"></div>
-        </div>
+        <div class="bg-white/80 p-2 rounded-2xl shadow-2xl mb-10"><div id="map"></div></div>
 
-        <div id="weatherGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        <div id="weatherGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"></div>
+
+        <div class="bg-white/95 rounded-2xl shadow-2xl overflow-hidden border border-white">
+            <div class="bg-indigo-950 p-4 text-white font-bold flex justify-between items-center">
+                <span>GEOSPATIAL ANALYTIC LOG</span>
+                <span class="text-[10px] opacity-60">AUTO-SYNCED</span>
+            </div>
+            <table class="w-full text-left text-sm text-slate-700">
+                <thead class="bg-slate-100 text-[10px] uppercase font-black text-slate-500">
+                    <tr>
+                        <th class="p-4">City</th>
+                        <th class="p-4 text-center">Temp</th>
+                        <th class="p-4 text-center">Humidity</th>
+                        <th class="p-4 text-center">Wind</th>
+                        <th class="p-4 text-center">Local Time</th>
+                    </tr>
+                </thead>
+                <tbody id="analyticBody">
+                    </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize Map
-        const map = L.map('map').setView([9.0820, 8.6753], 3); // Centered on Nigeria/Africa
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+        const map = L.map('map', { center: [9.0820, 8.6753], zoom: 2, layers: [streetLayer] });
+        L.control.layers({ "Street": streetLayer, "Satellite": satelliteLayer }).addTo(map);
 
         let markers = [];
+        let cityDataList = [];
+        let searchHistory = [];
 
         async function getMultiWeather() {
             const input = document.getElementById('cityInput').value;
-            const grid = document.getElementById('weatherGrid');
             const apiKey = 'aad4cbdae56d6d693c4f99064fe46dcd';
-            
             const cities = input.split(',').map(c => c.trim()).filter(c => c !== "");
-            if (cities.length === 0) return;
 
             for (let city of cities) {
                 try {
@@ -65,39 +87,64 @@
                     const data = await response.json();
                     if (data.cod !== 200) continue;
 
-                    // 1. Add Marker to Map
-                    const lat = data.coord.lat;
-                    const lon = data.coord.lon;
-                    const marker = L.marker([lat, lon]).addTo(map)
-                        .bindPopup(`<b>${data.name}</b><br>${Math.round(data.main.temp)}°C`)
-                        .openPopup();
-                    markers.push(marker);
-                    map.setView([lat, lon], 4);
-
-                    // 2. Create Card
-                    const card = document.createElement('div');
-                    card.className = "weather-card bg-white rounded-xl shadow-lg border-t-4 border-indigo-900 p-6 flex flex-col items-center text-center animate-in fade-in zoom-in duration-300";
-                    card.innerHTML = `
-                        <h3 class="text-indigo-900 font-black text-xl mb-1">${data.name}</h3>
-                        <p class="text-slate-400 text-[11px] mb-4">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                        <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" class="w-16 h-16">
-                        <p class="text-slate-800 text-4xl font-black my-4">${Math.round(data.main.temp)}.0°C</p>
-                        <p class="text-slate-500 text-[11px] font-bold uppercase tracking-widest border-t border-slate-100 pt-4 w-full">${data.weather[0].description}</p>
-                    `;
-                    grid.prepend(card); // Put newest city at the beginning
+                    cityDataList.push(data);
+                    if(!searchHistory.includes(data.name)) searchHistory.push(data.name);
+                    
+                    updateUI(data);
+                    updateStats();
+                    updateHistory();
                 } catch (error) { console.error(error); }
             }
             document.getElementById('cityInput').value = "";
         }
 
-        function clearAll() {
-            document.getElementById('weatherGrid').innerHTML = '';
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
-            map.setView([9.0820, 8.6753], 3);
+        function updateUI(data) {
+            const utcTimestamp = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+            const cityTime = new Date(utcTimestamp + (data.timezone * 1000)).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            // Map Marker
+            const marker = L.marker([data.coord.lat, data.coord.lon]).addTo(map).bindPopup(`${data.name}: ${cityTime}`);
+            markers.push(marker);
+
+            // Card
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-xl shadow-lg border-t-4 border-indigo-950 p-6 text-center";
+            card.innerHTML = `<h3 class="font-black">${data.name}</h3><p class="text-[10px] text-slate-400 mb-4">${cityTime}</p><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" class="mx-auto w-12"><p class="text-3xl font-black">${Math.round(data.main.temp)}°C</p>`;
+            document.getElementById('weatherGrid').prepend(card);
+
+            // Table Row
+            const row = `<tr><td class="p-4 font-bold">${data.name}</td><td class="p-4 text-center">${Math.round(data.main.temp)}°C</td><td class="p-4 text-center">${data.main.humidity}%</td><td class="p-4 text-center">${data.wind.speed}m/s</td><td class="p-4 text-center font-mono">${cityTime}</td></tr>`;
+            document.getElementById('analyticBody').innerHTML += row;
         }
 
-        document.getElementById('cityInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') getMultiWeather(); });
+        function updateHistory() {
+            document.getElementById('historyList').innerHTML = 'History: ' + searchHistory.slice(-5).map(h => `<span class="bg-indigo-100 px-2 py-1 rounded">${h}</span>`).join(' ');
+        }
+
+        function updateStats() {
+            document.getElementById('statsBar').classList.remove('hidden');
+            const hottest = cityDataList.reduce((p, c) => p.main.temp > c.main.temp ? p : c);
+            const coldest = cityDataList.reduce((p, c) => p.main.temp < c.main.temp ? p : c);
+            document.getElementById('hottestBox').innerText = `Hottest: ${hottest.name} (${Math.round(hottest.main.temp)}°C)`;
+            document.getElementById('coldestBox').innerText = `Coldest: ${coldest.name} (${Math.round(coldest.main.temp)}°C)`;
+            document.getElementById('avgBox').innerText = `Avg: ${Math.round(cityDataList.reduce((a,b)=>a+b.main.temp,0)/cityDataList.length)}°C`;
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("ITECH Global Weather Analysis - Babatunde Abass", 14, 15);
+            doc.autoTable({ html: 'table', startY: 25 });
+            doc.save("Weather_Analysis.pdf");
+        }
+
+        function clearAll() {
+            document.getElementById('weatherGrid').innerHTML = '';
+            document.getElementById('analyticBody').innerHTML = '';
+            document.getElementById('statsBar').classList.add('hidden');
+            markers.forEach(m => map.removeLayer(m));
+            cityDataList = [];
+        }
     </script>
 </body>
 </html>
