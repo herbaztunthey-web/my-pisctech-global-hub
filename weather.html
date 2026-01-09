@@ -19,7 +19,7 @@
 <body class="min-h-screen font-sans pb-20">
     
     <div class="bg-black/50 backdrop-blur-lg sticky top-0 z-[1000] py-4 px-6 text-center text-white border-b border-white/10 flex justify-between items-center">
-        <h1 class="text-xl font-bold tracking-tighter uppercase">Babatunde Abass</h1>
+        <a href="index.html" class="text-xl font-bold tracking-tighter uppercase hover:text-indigo-400 transition">← Babatunde Abass</a>
         <button onclick="downloadPDF()" class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded-xl text-xs font-black transition shadow-lg">PDF REPORT</button>
     </div>
 
@@ -32,13 +32,12 @@
 
         <div class="bg-white/90 backdrop-blur-md p-6 rounded-[2rem] shadow-2xl mb-6 border border-white">
             <div class="flex flex-col md:flex-row gap-4">
-                <input id="cityInput" type="text" placeholder="Lagos, Ibadan, London, Tokyo..." class="w-full md:flex-1 p-4 rounded-xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/20 outline-none font-bold">
+                <input id="cityInput" type="text" placeholder="Lagos, London, Tokyo..." class="w-full md:flex-1 p-4 rounded-xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/20 outline-none font-bold">
                 <div class="flex gap-2">
                     <button onclick="getMultiWeather()" class="bg-indigo-950 text-white px-10 py-4 rounded-xl font-black hover:bg-indigo-800 transition shadow-xl">ANALYZE</button>
                     <button onclick="clearAll()" class="bg-red-500 text-white px-6 py-4 rounded-xl font-black hover:bg-red-600 transition">CLEAR</button>
                 </div>
             </div>
-            <div id="historyList" class="mt-4 flex gap-2 flex-wrap text-[10px] font-black text-slate-400 uppercase"></div>
         </div>
 
         <div class="bg-white/80 p-2 rounded-[2rem] shadow-2xl mb-12"><div id="map"></div></div>
@@ -50,7 +49,7 @@
                 <span>GEOSPATIAL ANALYTIC LOG</span>
                 <span class="opacity-50">2026 EDITION</span>
             </div>
-            <table class="w-full text-left text-sm">
+            <table class="w-full text-left text-sm" id="reportTable">
                 <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-500 border-b">
                     <tr><th class="p-5">City</th><th class="p-5">Temp</th><th class="p-5">Humidity</th><th class="p-5">Wind</th><th class="p-5">Local Time</th></tr>
                 </thead>
@@ -63,12 +62,10 @@
     <script>
         const apiKey = 'aad4cbdae56d6d693c4f99064fe46dcd';
         
-        // Map Layers
         const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
         const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
         
-        // Weather Overlays
         const clouds = L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${apiKey}`);
         const rain = L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`);
 
@@ -79,7 +76,6 @@
         L.control.layers(baseMaps, overlays).addTo(map);
 
         let cityDataList = [];
-        let markers = [];
 
         async function getMultiWeather() {
             const cities = document.getElementById('cityInput').value.split(',').map(c => c.trim()).filter(c => c !== "");
@@ -94,12 +90,11 @@
                     const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
                     const localTime = new Date(utc + (data.timezone * 1000)).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
-                    // Update Map & List
                     L.marker([data.coord.lat, data.coord.lon]).addTo(map).bindPopup(`${data.name}: ${localTime}`).openPopup();
                     map.panTo([data.coord.lat, data.coord.lon]);
 
                     document.getElementById('weatherGrid').innerHTML += `
-                        <div class="weather-card bg-white rounded-2xl shadow-lg p-8 text-center animate-in zoom-in duration-300">
+                        <div class="weather-card bg-white rounded-2xl shadow-lg p-8 text-center">
                             <h3 class="font-black text-indigo-950 text-xl">${data.name}</h3>
                             <p class="text-[10px] text-slate-400 font-bold mb-4 uppercase tracking-widest">${localTime}</p>
                             <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" class="mx-auto w-20">
@@ -128,7 +123,7 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             doc.text("ITECH GLOBAL WEATHER REPORT", 14, 15);
-            doc.autoTable({ html: 'table', startY: 20, theme: 'striped' });
+            doc.autoTable({ html: '#reportTable', startY: 20, theme: 'striped' });
             doc.save("Weather_Report.pdf");
         }
 
