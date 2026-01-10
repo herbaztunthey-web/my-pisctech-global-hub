@@ -3,82 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITECH@PISCARTSYNERGY | Portfolio</title>
+    <title>ITECH@PISCARTSYNERGY | Portfolio Hub</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         html { scroll-behavior: smooth; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .glass-card:hover { transform: translateY(-10px); }
     </style>
 </head>
 <body class="bg-slate-50 font-sans leading-normal">
 
     <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-indigo-600 tracking-tight">ITECHPISCARTSYNERGY</h1>
-            <ul class="hidden md:flex space-x-8 font-medium text-slate-600">
+            <h1 class="text-2xl font-bold text-indigo-600 tracking-tight uppercase">ITECHPISCARTSYNERGY</h1>
+            <ul class="hidden md:flex space-x-8 font-black uppercase text-[11px] tracking-widest text-slate-600">
                 <li><a href="#" class="hover:text-indigo-600 transition">Home</a></li>
-                <li><a href="weather.html" class="hover:text-indigo-600 transition">Weather App</a></li>
+                <li><a href="#apps" class="hover:text-indigo-600 transition">Apps Suite</a></li>
                 <li><a href="#contact" class="hover:text-indigo-600 transition">Contact</a></li>
             </ul>
         </div>
     </nav>
 
     <header class="relative bg-[url('my3-bg.png')] bg-cover bg-center py-40 px-4 text-center min-h-[600px] flex items-center justify-center">
-        <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/80"></div>
         <div class="relative max-w-6xl mx-auto">
-            <h1 class="text-white text-xl font-bold tracking-widest uppercase mb-4 opacity-80">ITECHPISCARTSYNERGY</h1>
             <h2 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                This is Epitome of Learning, <br>
-                <span class="text-indigo-400">Professional Design.</span>
+                Integrated Logistics & <br>
+                <span class="text-indigo-400">Data Intelligence.</span>
             </h2>
             <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-medium">
-                Welcome to this Smart site where you can Explore and Learn modern day skills. I am building high-performance multi-purpose applications using GitHub, Render, and VS Code.
+                Professional ecosystem for Geospatial Data Analysis and Warehouse Administration.
             </p>
             <div class="flex justify-center gap-4">
-                <a href="weather.html" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow-xl">View Weather Project</a>
+                <a href="#apps" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow-xl">Explore My Apps</a>
                 <a href="#contact" class="bg-white/10 border border-white/30 text-white px-8 py-3 rounded-lg font-bold hover:bg-white/20 transition backdrop-blur-md">Contact Me</a>
             </div>
         </div>
     </header>
 
-    <section id="contact" class="py-20 bg-slate-900 text-white">
-        <div class="max-w-4xl mx-auto px-6">
+    <section id="apps" class="py-24 bg-slate-100">
+        <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-black tracking-tighter uppercase">Connect with Synergy</h2>
-                <p class="text-indigo-400 mt-2 font-bold tracking-widest text-xs uppercase">Babatunde Abass | Geospatial Data Analyst</p>
+                <h2 class="text-4xl font-black text-slate-900 uppercase tracking-tighter">The Synergy Suite</h2>
+                <p class="text-indigo-600 font-bold text-xs uppercase tracking-[0.3em] mt-2">Active Professional Applications</p>
             </div>
-    
-            <div class="bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
-                <form action="https://formspree.io/f/xrebnwro" method="POST" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Your Full Name</label>
-                            <input type="text" name="Full Name" required 
-                                class="w-full p-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-white">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Email Address</label>
-                            <input type="email" name="Email" required 
-                                class="w-full p-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-white">
-                        </div>
-                    </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <div class="glass-card p-8 rounded-[2.5rem] shadow-xl border border-white flex flex-col justify-between">
                     <div>
-                        <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Project Message</label>
-                        <textarea name="Message" rows="5" required 
-                            class="w-full p-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-white" 
-                            placeholder="Describe your geospatial or data inquiry..."></textarea>
+                        <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-cloud-sun text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-800 mb-3">Weather Analytics</h3>
+                        <p class="text-slate-600 mb-6">Real-time geospatial weather monitoring for supply chain risk assessment.</p>
                     </div>
-                    
-                    <input type="text" name="_gotcha" style="display:none">
-    
-                    <button type="submit" 
-                        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-5 rounded-2xl shadow-xl shadow-indigo-600/20 transition-all active:scale-95 uppercase tracking-widest text-sm">
-                        Send Message to ITECH
-                    </button>
-                </form>
+                    <a href="weather.html" class="bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600 transition">Launch Weather App</a>
+                </div>
+
+                <div class="glass-card p-8 rounded-[2.5rem] shadow-xl border border-white flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-ship text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-800 mb-3">Maritime Logistics</h3>
+                        <p class="text-slate-600 mb-6">Port discovery, distance calculations, and fuel OPEX appraisal for global shipping.</p>
+                    </div>
+                    <a href="https://cargo-logistics-tracker.onrender.comSS" target="_blank" class="bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-blue-600 transition">Launch Logistics Engine</a>
+                </div>
+
             </div>
         </div>
     </section>
+
+    <section id="contact" class="py-20 bg-slate-900 text-white">
+        </section>
 
     <footer class="py-10 text-center text-slate-500 text-sm">
         <p>&copy; 2026 ITECHPISCARTSYNERGY. Built with VS Code by Babatunde Abass.</p>
