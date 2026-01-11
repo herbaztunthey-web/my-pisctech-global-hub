@@ -1,21 +1,25 @@
+import os
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
+# This pulls the key safely from Render's environment
+WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY')
+
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
+
+# Add your weather route here
 
 
 @app.route('/weather')
 def weather():
-    return render_template('weather.html')
+    # You can now use WEATHER_API_KEY in your API call logic
+    return render_template('weather.html', api_key=WEATHER_API_KEY)
 
-
-@app.route('/maritime')
-def maritime():
-    return render_template('maritime.html')
+# Ensure routes exist for your other pages to avoid 404 errors
 
 
 @app.route('/solar')
@@ -23,5 +27,10 @@ def solar():
     return render_template('solar.html')
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/maritime')
+def maritime():
+    return render_template('maritime.html')
+
+
+if __name__ == "__main__":
+    app.run()
