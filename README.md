@@ -23,3 +23,7 @@ This project demonstrates the synergy between modern web tools and geospatial da
 
 ## 👨‍💻 Author
 **Babatunde Abass** Geospatial Data Analyst & Developer
+
+Headline,PiscTech Global Hub: A Multi-Functional Engineering & Logistics Suite
+Summary,A high-performance web application designed to integrate critical real-time data for specialized industries. Built with Python (Flask) and deployed on Render.
+Key Features,• Global Weather Insights: Precision meteorological tracking.• Maritime & Logistics Hub: Specialized tools for sea-freight and vessel tracking.• Solar Energy Monitoring: Real-time solar efficiency and data visualization.
