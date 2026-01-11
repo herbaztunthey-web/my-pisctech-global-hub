@@ -3,28 +3,19 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-# This pulls the key safely from Render's environment
+# Safely retrieves your API key from Render's environment settings
 WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY')
 
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
-
-# Add your weather route here
 
 
 @app.route('/weather')
 def weather():
-    # You can now use WEATHER_API_KEY in your API call logic
+    # Passes the API key to the weather page for live data fetching
     return render_template('weather.html', api_key=WEATHER_API_KEY)
-
-# Ensure routes exist for your other pages to avoid 404 errors
-
-
-@app.route('/solar')
-def solar():
-    return render_template('solar.html')
 
 
 @app.route('/maritime')
@@ -32,5 +23,11 @@ def maritime():
     return render_template('maritime.html')
 
 
-if __name__ == "__main__":
+@app.route('/solar')
+def solar():
+    return render_template('solar.html')
+
+
+if __name__ == '__main__':
+    # Standard start for local testing; Render uses Gunicorn to run this
     app.run()
