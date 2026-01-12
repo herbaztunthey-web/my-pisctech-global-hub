@@ -1,3 +1,4 @@
+# Copy and Paste into your app.py
 import os
 from flask import Flask, render_template
 
@@ -14,7 +15,6 @@ def home():
 
 @app.route('/weather')
 def weather():
-    # Passes the API key to the weather page for live data fetching
     return render_template('weather.html', api_key=WEATHER_API_KEY)
 
 
@@ -29,5 +29,5 @@ def solar():
 
 
 if __name__ == '__main__':
-    # Standard start for local testing; Render uses Gunicorn to run this
+    # Default port for local testing. Render will ignore this and use its own.
     app.run()
