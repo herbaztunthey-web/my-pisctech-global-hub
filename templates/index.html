@@ -4,107 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ITECH@PISCARTSYNERGY | Portfolio Hub</title>
-    <link rel="icon" type="image/jpeg" href="/static/favicon.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html { scroll-behavior: smooth; }
-        /* Restoring your glass cards with forced pointer cursor */
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.9); 
-            backdrop-filter: blur(10px); 
-            transition: all 0.3s ease;
-        }
+        .hero-bg { background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('/static/my3-bg.png') center/cover fixed; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); transition: all 0.3s ease; border: 1px solid white; }
         .glass-card:hover { transform: translateY(-10px); }
-        .hero-bg { 
-            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('/static/my3-bg.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        /* The Hand Cursor Fix */
-        .btn-launch { cursor: pointer !important; display: block; width: 100%; }
+        .clickable-btn { cursor: pointer !important; position: relative; z-index: 50; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans leading-normal">
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <nav class="bg-white border-b sticky top-0 z-[100]">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-indigo-600 tracking-tight uppercase">ITECHPISCARTSYNERGY</h1>
-            <ul class="hidden md:flex space-x-8 font-black uppercase text-[11px] tracking-widest text-slate-600">
-                <li><a href="/" class="hover:text-indigo-600 transition">Home</a></li>
-                <li><a href="#apps" class="hover:text-indigo-600 transition">Apps Suite</a></li>
-                <li><a href="#contact" class="hover:text-indigo-600 transition">Contact</a></li>
-            </ul>
+            <h1 class="text-2xl font-bold text-indigo-600 uppercase">ITECHPISCARTSYNERGY</h1>
         </div>
     </nav>
 
-    <header class="hero-bg py-40 px-4 text-center min-h-[600px] flex items-center justify-center">
-        <div class="relative max-w-6xl mx-auto">
-            <h2 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                Integrated Logistics & <br>
-                <span class="text-indigo-400">Data Intelligence.</span>
-            </h2>
-            <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-medium">
-                Professional ecosystem for Geospatial Data Analysis and Warehouse Administration.
-            </p>
-            <div class="flex justify-center gap-4">
-                <a href="#apps" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow-xl">Explore My Apps</a>
-                <a href="#contact" class="bg-white/10 border border-white/30 text-white px-8 py-3 rounded-lg font-bold hover:bg-white/20 transition backdrop-blur-md">Contact Me</a>
-            </div>
-        </div>
+    <header class="hero-bg py-40 text-center text-white">
+        <h2 class="text-5xl md:text-7xl font-extrabold mb-6">Integrated Logistics</h2>
+        <a href="#apps" class="clickable-btn bg-indigo-600 px-8 py-3 rounded-lg font-bold">Explore My Apps</a>
     </header>
 
-    <section id="apps" class="py-24 bg-slate-100">
-        <div class="max-w-6xl mx-auto px-6 text-center mb-16">
-            <h2 class="text-4xl font-black text-slate-900 uppercase tracking-tighter">The Synergy Suite</h2>
-            <p class="text-indigo-600 font-bold text-xs uppercase tracking-[0.3em] mt-2">Active Professional Applications</p>
-        </div>
+    <section id="apps" class="relative z-10 py-24 bg-slate-100">
         <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div class="glass-card p-8 rounded-[2.5rem] shadow-xl border border-white flex flex-col justify-between">
+            
+            <div class="glass-card p-8 rounded-[2.5rem] shadow-xl flex flex-col justify-between">
                 <div>
-                    <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-cloud-sun text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-800 mb-3">Weather Analytics</h3>
-                    <p class="text-slate-600 mb-6 text-sm">Real-time geospatial weather monitoring for supply chain risk assessment.</p>
+                    <i class="fa-solid fa-cloud-sun text-indigo-600 text-4xl mb-6"></i>
+                    <h3 class="text-2xl font-black mb-3 text-slate-800">Weather Analytics</h3>
+                    <p class="text-slate-600 text-sm mb-6">Real-time geospatial monitoring.</p>
                 </div>
-                <a href="/weather" class="btn-launch bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600 transition">Launch Weather App</a>
+                <a href="/weather" class="clickable-btn bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600">Launch Weather App</a>
             </div>
 
-            <div class="glass-card p-8 rounded-[2.5rem] shadow-xl border border-white flex flex-col justify-between">
+            <div class="glass-card p-8 rounded-[2.5rem] shadow-xl flex flex-col justify-between">
                 <div>
-                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-ship text-blue-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-800 mb-3">Maritime Logistics</h3>
-                    <p class="text-slate-600 mb-6 text-sm">Port discovery and global shipping tracking.</p>
+                    <i class="fa-solid fa-ship text-blue-600 text-4xl mb-6"></i>
+                    <h3 class="text-2xl font-black mb-3 text-slate-800">Maritime Logistics</h3>
+                    <p class="text-slate-600 text-sm mb-6">Global shipping tracking.</p>
                 </div>
-                <a href="/maritime" class="btn-launch bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-blue-600 transition">Launch Logistics Engine</a>
+                <a href="/maritime" class="clickable-btn bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-blue-600">Launch Logistics Engine</a>
             </div>
 
-            <div class="glass-card p-8 rounded-[2.5rem] shadow-xl border border-white flex flex-col justify-between">
+            <div class="glass-card p-8 rounded-[2.5rem] shadow-xl flex flex-col justify-between">
                 <div>
-                    <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-solar-panel text-yellow-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-800 mb-3">Solar Analytics</h3>
-                    <p class="text-slate-600 mb-6 text-sm">Investment modeling using NASA Climatology data.</p>
+                    <i class="fa-solid fa-solar-panel text-yellow-600 text-4xl mb-6"></i>
+                    <h3 class="text-2xl font-black mb-3 text-slate-800">Solar Analytics</h3>
+                    <p class="text-slate-600 text-sm mb-6">NASA Climatology modeling.</p>
                 </div>
-                <a href="/solar" class="btn-launch bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-yellow-600 transition">Launch Solar ROI</a>
+                <a href="/solar" class="clickable-btn bg-slate-900 text-white text-center py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-yellow-600">Launch Solar ROI</a>
             </div>
+
         </div>
     </section>
 
     <section id="contact" class="py-20 bg-slate-900 text-white text-center">
-        <h2 class="text-3xl font-black uppercase mb-4">Get In Touch</h2>
-        <p class="text-slate-400 mb-8 px-4">Professional inquiries and synergy opportunities.</p>
-        <a href="mailto:tunthey@yahoo.com" class="bg-indigo-600 text-white px-10 py-4 rounded-xl font-bold hover:bg-indigo-500 transition shadow-xl inline-block">
+        <a href="mailto:tunthey@yahoo.com" class="clickable-btn bg-indigo-600 px-10 py-4 rounded-xl font-bold inline-block">
             <i class="fa-solid fa-envelope mr-2"></i> tunthey@yahoo.com
         </a>
     </section>
-
-    <footer class="py-10 text-center text-slate-500 text-sm">
-        <p>&copy; 2026 ITECHPISCARTSYNERGY. Built with VS Code by Babatunde Abass.</p>
-    </footer>
 </body>
 </html>

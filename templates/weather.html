@@ -2,40 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Analytics | ITECH</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background: url('/static/my3-bg.png') no-repeat center center fixed; background-size: cover; }
-        .glass-panel { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .glass-panel { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); border-radius: 2rem; }
         #map { height: 450px; border-radius: 2rem; border: 4px solid white; z-index: 1; }
-        .btn-action { cursor: pointer !important; }
+        .clickable { cursor: pointer !important; }
     </style>
 </head>
-<body class="min-h-screen text-white">
-    <nav class="p-6">
-        <a href="/" class="btn-action glass-panel px-6 py-2 rounded-full font-bold text-sm">← Back to Hub</a>
-    </nav>
-    <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div class="lg:col-span-4 glass-panel p-8 rounded-[2rem]">
-            <h2 class="text-3xl font-black mb-6">WEATHER ANALYTICS</h2>
-            <input type="text" id="cityInput" placeholder="Enter City..." class="w-full bg-white/10 p-4 rounded-xl mb-4 text-white">
-            <button onclick="getWeather()" class="btn-action w-full bg-indigo-600 py-4 rounded-xl font-bold">ANALYZE DATA</button>
+<body class="min-h-screen text-white p-6">
+    <a href="/" class="clickable inline-block mb-6 font-bold uppercase text-xs tracking-widest bg-white/20 px-4 py-2 rounded-full">← Back to Hub</a>
+    
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-4 glass-panel p-8">
+            <h2 class="text-3xl font-black mb-6 tracking-tighter uppercase">Geospatial Weather</h2>
+            <input type="text" id="cityInput" placeholder="Enter City (e.g. Lagos)..." class="w-full bg-white/10 p-4 rounded-xl mb-4 border border-white/20">
+            <button onclick="getWeather()" class="clickable w-full bg-indigo-600 hover:bg-indigo-500 py-4 rounded-xl font-bold uppercase tracking-widest transition">Analyze Data</button>
+            
+            <div id="weatherResult" class="hidden mt-8 p-6 bg-white/10 rounded-2xl text-center">
+                <h3 id="cityName" class="text-2xl font-bold"></h3>
+                <p id="temp" class="text-5xl font-black my-2"></p>
+                <p id="desc" class="uppercase text-xs tracking-widest opacity-70"></p>
+            </div>
         </div>
+        
         <div class="lg:col-span-8">
             <div id="map"></div>
         </div>
-    </main>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
-        const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
-        const map = L.map('map', { center: [9.0820, 8.6753], zoom: 5, layers: [satellite] });
-        L.control.layers({"Satellite": satellite, "Terrain": terrain, "Street": street}).addTo(map);
+        const map = L.map('map').setView([9.0820, 8.6753], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        let marker;
+
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            if (!city) return alert("Please type a city name");
+
+            try {
+                const response = await fetch(`/get_weather?city=${city}`);
+                const data = await response.json();
+
+                if (data.cod === 200) {
+                    document.getElementById('weatherResult').classList.remove('hidden');
+                    document.getElementById('cityName').innerText = data.name;
+                    document.getElementById('temp').innerText = Math.round(data.main.temp) + "°C";
+                    document.getElementById('desc').innerText = data.weather[0].description;
+
+                    const lat = data.coord.lat;
+                    const lon = data.coord.lon;
+                    map.setView([lat, lon], 10);
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker([lat, lon]).addTo(map).bindPopup(data.name).openPopup();
+                } else {
+                    alert("City not found");
+                }
+            } catch (err) { console.error(err); }
+        }
     </script>
 </body>
 </html>
