@@ -4,7 +4,7 @@ import requests  # The library we just added to requirements.txt
 app = Flask(__name__)
 
 # Use the API key you mentioned having for your weather app
-API_KEY = 'YOUR_API_KEY_HERE'
+API_KEY = 'aad4cbdae56d6d693c4f99064fe46dcd'
 
 
 @app.route('/')
