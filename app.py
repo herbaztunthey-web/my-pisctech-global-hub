@@ -1,10 +1,9 @@
-# Copy and Paste into your app.py
 import os
 from flask import Flask, render_template
 
-app = Flask(__name__)
+# Added static_url_path to ensure images load correctly on Render
+app = Flask(__name__, static_url_path='/static')
 
-# Safely retrieves your API key from Render's environment settings
 WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY')
 
 
@@ -29,5 +28,4 @@ def solar():
 
 
 if __name__ == '__main__':
-    # Default port for local testing. Render will ignore this and use its own.
     app.run()

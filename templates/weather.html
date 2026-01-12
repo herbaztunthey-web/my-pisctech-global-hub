@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Analytics | ITECHPISCARTSYNERGY</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -19,7 +19,7 @@
 <body class="min-h-screen font-sans pb-20">
     
     <div class="bg-black/50 backdrop-blur-lg sticky top-0 z-[1000] py-4 px-6 text-center text-white border-b border-white/10 flex justify-between items-center">
-        <a href="index.html" class="text-xl font-bold tracking-tighter uppercase hover:text-indigo-400 transition">← Babatunde Abass</a>
+        <a href="/" class="text-xl font-bold text-indigo-600 tracking-tighter uppercase hover:opacity-70 transition">← Back to Hub</a>
         <button onclick="downloadPDF()" class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded-xl text-xs font-black transition shadow-lg">PDF REPORT</button>
     </div>
 
@@ -60,7 +60,8 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const apiKey = 'aad4cbdae56d6d693c4f99064fe46dcd';
+        // CRITICAL FIX: Pulls the API key securely from your Render Environment Settings
+        const apiKey = '{{ api_key }}'; 
         
         const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
