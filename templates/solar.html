@@ -1,54 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar ROI Analytics | ITECHPISCARTSYNERGY</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Solar ROI | ITECH</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>#map { height: 400px; border-radius: 2rem; border: 4px solid white; }</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>#map { height: 450px; border-radius: 2rem; border: 5px solid #f59e0b; }</style>
 </head>
-<body class="bg-slate-50 font-sans leading-normal">
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-[1000] py-4 px-6 flex justify-between items-center">
-        <a href="/" class="text-xl font-bold text-yellow-600 tracking-tighter uppercase hover:opacity-70 transition">← Back to Hub</a>
-        <h1 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Renewable Energy Intelligence</h1>
-    </nav>
-
-    <header class="bg-yellow-500 py-16 px-4 text-center text-white">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-5xl font-black mb-4 tracking-tighter">Solar ROI Analytics</h2>
-            <p class="text-lg font-medium text-yellow-100">NASA Climatology-based investment modeling.</p>
-        </div>
+<body class="bg-orange-50 p-6">
+    <a href="/" class="text-orange-600 font-bold mb-4 inline-block">← BACK TO HUB</a>
+    <header class="text-center mb-10">
+        <h2 class="text-4xl font-black text-orange-900">Solar ROI Analytics</h2>
+        <p>NASA Climatology Data Integration</p>
     </header>
-
-    <main class="max-w-6xl mx-auto px-6 py-12">
-        <div id="map" class="shadow-xl mb-12"></div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-[2rem] shadow-lg border border-slate-100 text-center">
-                <h3 class="font-bold mb-2">Radiation Mapping</h3>
-                <div class="h-2 w-full bg-slate-100 rounded-full"><div class="bg-yellow-500 h-full w-[85%]"></div></div>
-            </div>
-            <div class="bg-white p-8 rounded-[2rem] shadow-lg border border-slate-100 text-center">
-                <h3 class="font-bold mb-2">Yield Forecast</h3>
-                <div class="h-2 w-full bg-slate-100 rounded-full"><div class="bg-yellow-500 h-full w-[70%]"></div></div>
-            </div>
-            <div class="bg-white p-8 rounded-[2rem] shadow-lg border border-slate-100 text-center">
-                <h3 class="font-bold mb-2">ROI Calculator</h3>
-                <div class="h-2 w-full bg-slate-100 rounded-full"><div class="bg-yellow-500 h-full w-[95%]"></div></div>
-            </div>
-        </div>
-    </main>
+    <div id="map" class="max-w-5xl mx-auto shadow-xl"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
-        const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
-
-        const map = L.map('map', { center: [9.0820, 8.6753], zoom: 3, layers: [terrain] });
-        const baseMaps = { "Terrain View": terrain, "Satellite View": satellite, "Street Map": street };
-        L.control.layers(baseMaps).addTo(map);
+        var terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
+        var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+        var map = L.map('map', { center: [9.08, 8.67], zoom: 4, layers: [terrain] });
+        L.control.layers({"Terrain": terrain, "Satellite": sat}).addTo(map).expand();
     </script>
 </body>
 </html>
