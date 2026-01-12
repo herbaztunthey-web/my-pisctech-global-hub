@@ -3,134 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Analytics | ITECH@PISCARTSYNERGY</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Weather Analytics | ITECH</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            /* This links to your specific background image */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/my3-bg.png') no-repeat center center fixed;
-            background-size: cover;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 2rem;
-        }
-        #map { 
-            height: 500px; 
-            border-radius: 2rem; 
-            border: 3px solid rgba(255,255,255,0.2); 
-            z-index: 1; 
-        }
-        .leaflet-control-layers { border-radius: 10px !important; font-weight: bold; color: black; }
+        body { background: url('/static/my3-bg.png') no-repeat center center fixed; background-size: cover; }
+        .glass-panel { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        #map { height: 450px; border-radius: 2rem; border: 4px solid white; z-index: 1; }
+        .btn-action { cursor: pointer !important; }
     </style>
 </head>
-<body class="min-h-screen text-white font-sans">
-
-    <nav class="p-6 flex justify-between items-center">
-        <a href="/" class="glass-panel px-6 py-2 font-bold text-xs uppercase tracking-widest hover:bg-white/20 transition">
-            <i class="fa-solid fa-house mr-2"></i> Back to Hub
-        </a>
-        <span class="text-[10px] font-black uppercase tracking-[0.4em] opacity-60">Geospatial Intelligence Edition</span>
+<body class="min-h-screen text-white">
+    <nav class="p-6">
+        <a href="/" class="btn-action glass-panel px-6 py-2 rounded-full font-bold text-sm">← Back to Hub</a>
     </nav>
-
-    <main class="max-w-7xl mx-auto px-6 py-4">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <div class="lg:col-span-4 space-y-6">
-                <div class="glass-panel p-8 shadow-2xl">
-                    <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter">Weather Data</h2>
-                    <p class="text-indigo-300 text-xs font-bold uppercase mb-6 tracking-widest">Real-Time Analytic Engine</p>
-                    
-                    <div class="space-y-4">
-                        <input type="text" id="cityInput" placeholder="Enter Global City (e.g. Lagos)..." 
-                               class="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-4 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                        
-                        <button onclick="getWeather()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition shadow-xl">
-                            Analyze Geospatial Data
-                        </button>
-                    </div>
-                </div>
-
-                <div id="weatherResult" class="hidden glass-panel p-8 text-center animate-pulse">
-                    <h3 id="cityName" class="text-4xl font-black mb-2 tracking-tighter">---</h3>
-                    <div id="temp" class="text-7xl font-black text-indigo-400 my-4">--°C</div>
-                    <p id="desc" class="uppercase font-bold tracking-[0.2em] text-sm text-slate-300">Scanning...</p>
-                    <div class="mt-6 pt-6 border-t border-white/10 flex justify-around text-xs font-bold">
-                        <div>HUMIDITY: <span id="humidity" class="text-indigo-400">--%</span></div>
-                        <div>WIND: <span id="wind" class="text-indigo-400">--km/h</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:col-span-8">
-                <div id="map" class="shadow-2xl"></div>
-            </div>
-
+    <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-4 glass-panel p-8 rounded-[2rem]">
+            <h2 class="text-3xl font-black mb-6">WEATHER ANALYTICS</h2>
+            <input type="text" id="cityInput" placeholder="Enter City..." class="w-full bg-white/10 p-4 rounded-xl mb-4 text-white">
+            <button onclick="getWeather()" class="btn-action w-full bg-indigo-600 py-4 rounded-xl font-bold">ANALYZE DATA</button>
+        </div>
+        <div class="lg:col-span-8">
+            <div id="map"></div>
         </div>
     </main>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize Map Layers
         const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
         const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
-
-        // Setup Map with Satellite View as default
-        const map = L.map('map', {
-            center: [9.0820, 8.6753], // Default Nigeria
-            zoom: 5,
-            layers: [satellite] 
-        });
-
-        // Add Layer Switch Control (The Floating Menu)
-        const baseMaps = {
-            "Satellite View": satellite,
-            "Terrain View": terrain,
-            "Street Map": street
-        };
-        L.control.layers(baseMaps).addTo(map);
-
-        let marker;
-
-        async function getWeather() {
-            const city = document.getElementById('cityInput').value;
-            if (!city) return;
-
-            try {
-                const response = await fetch(`/get_weather?city=${city}`);
-                const data = await response.json();
-
-                if (data.cod === 200) {
-                    const resDiv = document.getElementById('weatherResult');
-                    resDiv.classList.remove('hidden');
-                    resDiv.classList.remove('animate-pulse');
-
-                    document.getElementById('cityName').innerText = data.name.toUpperCase();
-                    document.getElementById('temp').innerText = Math.round(data.main.temp) + "°C";
-                    document.getElementById('desc').innerText = data.weather[0].description;
-                    document.getElementById('humidity').innerText = data.main.humidity + "%";
-                    document.getElementById('wind').innerText = data.wind.speed + "km/h";
-
-                    const lat = data.coord.lat;
-                    const lon = data.coord.lon;
-                    map.setView([lat, lon], 12);
-
-                    if (marker) map.removeLayer(marker);
-                    marker = L.marker([lat, lon]).addTo(map)
-                        .bindPopup(`<b style="color:black">${data.name}</b>`)
-                        .openPopup();
-                } else {
-                    alert("City Not Found In Database");
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        }
+        const map = L.map('map', { center: [9.0820, 8.6753], zoom: 5, layers: [satellite] });
+        L.control.layers({"Satellite": satellite, "Terrain": terrain, "Street": street}).addTo(map);
     </script>
 </body>
 </html>
