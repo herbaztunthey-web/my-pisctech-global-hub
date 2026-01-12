@@ -1,22 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maritime Logistics | ITECH</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>#map { height: 500px; width: 100%; border-radius: 1rem; z-index: 1; }</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        #map { height: 500px; width: 100%; border-radius: 1.5rem; z-index: 1; border: 4px solid #1e293b; }
+        /* Forces the hand cursor on all buttons */
+        .clickable { cursor: pointer !important; transition: all 0.2s; }
+        .clickable:hover { opacity: 0.8; transform: scale(1.02); }
+    </style>
 </head>
 <body class="bg-slate-900 text-white p-6">
-    <a href="/" class="text-blue-400 font-bold mb-4 inline-block">← BACK TO HUB</a>
-    <h2 class="text-3xl font-black mb-6 text-center">Vessel Intelligence & Port Data</h2>
-    <div id="map" class="shadow-2xl"></div>
+    <nav class="max-w-6xl mx-auto mb-6 flex justify-between items-center">
+        <a href="/" class="clickable bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Hub
+        </a>
+        <h1 class="text-blue-500 font-black uppercase tracking-widest text-xs">Vessel Intelligence Engine</h1>
+    </nav>
+
+    <div class="max-w-6xl mx-auto">
+        <div id="map" class="shadow-2xl mb-8"></div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-800 p-8 rounded-[2rem] border border-white/10">
+                <h3 class="text-xl font-black text-blue-400 mb-2 uppercase">Port Database</h3>
+                <p class="text-sm text-slate-400">Real-time arrival and departure analytics for global maritime hubs.</p>
+            </div>
+            <div class="bg-slate-800 p-8 rounded-[2rem] border border-white/10">
+                <h3 class="text-xl font-black text-blue-400 mb-2 uppercase">Fuel Optimizer</h3>
+                <p class="text-sm text-slate-400">Calculating OPEX based on nautical distance and current vessel speed.</p>
+            </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
-        var map = L.map('map', { center: [9.08, 8.67], zoom: 4, layers: [sat] });
-        L.control.layers({"Satellite": sat, "Street": street}).addTo(map);
+        const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+        const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
+
+        const map = L.map('map', { center: [6.45, 3.39], zoom: 5, layers: [sat] });
+        const baseMaps = { "Satellite View": sat, "Terrain View": terrain, "Street Map": street };
+        L.control.layers(baseMaps).addTo(map);
     </script>
 </body>
 </html>

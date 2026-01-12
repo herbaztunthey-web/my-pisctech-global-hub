@@ -1,25 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Solar ROI | ITECH</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar ROI Analytics | ITECH</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>#map { height: 450px; border-radius: 2rem; border: 5px solid #f59e0b; }</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        #map { height: 450px; width: 100%; border-radius: 2rem; border: 6px solid white; z-index: 1; }
+        .clickable { cursor: pointer !important; transition: 0.3s; }
+        .clickable:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    </style>
 </head>
-<body class="bg-orange-50 p-6">
-    <a href="/" class="text-orange-600 font-bold mb-4 inline-block">← BACK TO HUB</a>
-    <header class="text-center mb-10">
-        <h2 class="text-4xl font-black text-orange-900">Solar ROI Analytics</h2>
-        <p>NASA Climatology Data Integration</p>
-    </header>
-    <div id="map" class="max-w-5xl mx-auto shadow-xl"></div>
+<body class="bg-orange-50 p-6 min-h-screen">
+    <nav class="max-w-5xl mx-auto mb-8 flex justify-between items-center">
+        <a href="/" class="clickable bg-orange-600 text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-tighter flex items-center shadow-lg">
+            <i class="fa-solid fa-chevron-left mr-2"></i> Back to Hub
+        </a>
+        <div class="text-orange-900 font-black text-sm uppercase">Solar Intelligence</div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto text-center mb-10">
+        <h2 class="text-5xl font-black text-orange-950 tracking-tighter mb-4 uppercase">NASA Climatology Data</h2>
+        <p class="text-orange-800 font-medium">Analyzing solar irradiance for high-yield investment ROI.</p>
+    </div>
+
+    <div id="map" class="max-w-5xl mx-auto shadow-2xl mb-10"></div>
+
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-b-4 border-orange-500">
+            <i class="fa-solid fa-sun text-orange-500 text-3xl mb-4"></i>
+            <h4 class="font-bold uppercase text-xs">Irradiance</h4>
+        </div>
+        <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-b-4 border-orange-500">
+            <i class="fa-solid fa-bolt text-orange-500 text-3xl mb-4"></i>
+            <h4 class="font-bold uppercase text-xs">Peak Yield</h4>
+        </div>
+        <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-b-4 border-orange-500">
+            <i class="fa-solid fa-chart-line text-orange-500 text-3xl mb-4"></i>
+            <h4 class="font-bold uppercase text-xs">ROI Forecast</h4>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        var terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
-        var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
-        var map = L.map('map', { center: [9.08, 8.67], zoom: 4, layers: [terrain] });
-        L.control.layers({"Terrain": terrain, "Satellite": sat}).addTo(map).expand();
+        const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png');
+        const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+        const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+        const map = L.map('map', { center: [9.08, 8.67], zoom: 5, layers: [terrain] });
+        const baseMaps = { "Terrain View": terrain, "Satellite View": sat, "Street Map": street };
+        L.control.layers(baseMaps).addTo(map);
     </script>
 </body>
 </html>
