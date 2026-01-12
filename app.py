@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 # Replace with your actual key from your weather app info
-API_KEY = 'YOUR_OPENWEATHER_API_KEY'
+API_KEY = 'aad4cbdae56d6d693c4f99064fe46dcd'
 
 
 @app.route('/')
