@@ -1,10 +1,11 @@
 import os
-from flask import Flask, render_template
+import requests
+from flask import Flask, render_template, request, jsonify
 
-# Added static_url_path to ensure images load correctly on Render
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__)
 
-WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY')
+# Replace with your actual key from your weather app info
+API_KEY = 'YOUR_OPENWEATHER_API_KEY'
 
 
 @app.route('/')
@@ -13,19 +14,27 @@ def home():
 
 
 @app.route('/weather')
-def weather():
-    return render_template('weather.html', api_key=WEATHER_API_KEY)
+def weather_page():
+    return render_template('weather.html')
 
 
 @app.route('/maritime')
-def maritime():
+def maritime_page():
     return render_template('maritime.html')
 
 
 @app.route('/solar')
-def solar():
+def solar_page():
     return render_template('solar.html')
 
 
+@app.route('/get_weather')
+def get_weather():
+    city = request.args.get('city')
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    response = requests.get(url)
+    return jsonify(response.json())
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
