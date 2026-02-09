@@ -1,4 +1,3 @@
-# Version 2.0
 import os
 import io
 import requests
